@@ -7,7 +7,19 @@ using UnityEngine.InputSystem;
 public class ShipControllerV3 : NetworkBehaviour
 {
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float thrustModifier, upDownModifier, yawModifier, pitchModifier, rollModifier = 1;
+    [Header("Movement Modifiers")]
+    //[SerializeField] private float thrustModifier, upDownModifier, yawModifier, pitchModifier, rollModifier = 1;
+    [SerializeField] private float thrustModifier = 1;
+    [SerializeField] private float upDownModifier = 1;
+    [SerializeField] private float yawModifier = 1;
+    [SerializeField] private float pitchModifier = 1;
+    [SerializeField] private float rollModifier = 1;
+
+    [Header("Movement Types")]
+    [SerializeField] private bool clientAuthorititiveMovement = false;
+    [SerializeField] private bool planeControls = false; 
+    [SerializeField] private bool airshipControls = true; 
+    [SerializeField] private bool holdToThrust = true;
 
     private float thrustInput, thrust = 0;
     private Vector3 thrustForce = Vector3.zero;
@@ -19,10 +31,10 @@ public class ShipControllerV3 : NetworkBehaviour
     private float pitchInput, pitch = 0;
     private float rollInput, roll = 0;
 
-    private Quaternion shipRotation = Quaternion.identity;
-
+    [Header("GameObject References")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletToSpawn;
+
 
     private struct MyShipData : INetworkSerializable
     {
@@ -53,43 +65,57 @@ public class ShipControllerV3 : NetworkBehaviour
 
     public void OnUpDown(InputAction.CallbackContext context)
     {
-        upDownInput = context.ReadValue<float>();
+        if (airshipControls)
+        {
+            upDownInput = context.ReadValue<float>();
+        }
     }
 
     public void OnYaw(InputAction.CallbackContext context)
     {
-        yawInput = context.ReadValue<float>();
+        if (airshipControls)
+        {
+            yawInput = context.ReadValue<float>();
+        }
     }
 
     public void OnPitch(InputAction.CallbackContext context)
     {
-        pitchInput = context.ReadValue<float>();
+        if (planeControls)
+        {
+            pitchInput = context.ReadValue<float>();
+        }
     }
 
     public void OnRoll(InputAction.CallbackContext context)
     {
-        rollInput = context.ReadValue<float>();
+        if (planeControls)
+        {
+            rollInput = context.ReadValue<float>();
+        }
     }
 
     void FixedUpdate()
     {
-        if (!IsOwner)
+        if (!IsOwner) return;
+
+        ConvertToDecimalValues();
+
+        thrustForce = transform.forward * thrust * thrustModifier * Time.fixedDeltaTime;
+        upDownForce = transform.up * upDown * upDownModifier * Time.fixedDeltaTime;
+
+        Vector3 tempVector = new Vector3(-pitch * pitchModifier, yaw * yawModifier, roll * rollModifier);
+        Quaternion rotation = Quaternion.Euler(tempVector * 2.0f * Time.fixedDeltaTime);
+
+        if (!clientAuthorititiveMovement)
         {
-            return;
-        }
-        else
-        {
-
-            ConvertToDecimalValues();
-
-            thrustForce = transform.forward * thrust * thrustModifier * Time.fixedDeltaTime;
-            upDownForce = transform.up * upDown * upDownModifier * Time.fixedDeltaTime;
-
-            Vector3 tempVector = new Vector3(-pitch * pitchModifier, yaw * yawModifier, roll * rollModifier);
-            Quaternion rotation = Quaternion.Euler(tempVector * 2.0f * Time.fixedDeltaTime);
-
             HandleMovementServerAuth(thrustForce, upDownForce, rotation);
+        } else
+        {
+            rb.MovePosition(transform.position + (thrustForce + upDownForce));
+            rb.MoveRotation(rb.rotation * rotation);
         }
+        
     }
 
     private void HandleMovementServerAuth(Vector3 _thrust, Vector3 _up, Quaternion _rotation)
@@ -127,7 +153,7 @@ public class ShipControllerV3 : NetworkBehaviour
 
     private void ConvertToDecimalValues()
     {
-        thrust = calculatefloatValue(thrustInput, thrust);
+        thrust = calculatefloatValue(thrustInput, thrust, holdToThrust);
         upDown = calculatefloatValue(upDownInput, upDown);
         yaw = calculatefloatValue(yawInput, yaw);
         pitch = calculatefloatValue(pitchInput, pitch);
@@ -135,6 +161,11 @@ public class ShipControllerV3 : NetworkBehaviour
     }
 
     private float calculatefloatValue(float input, float returned)
+    {
+        return calculatefloatValue(input, returned, true);
+    }
+
+    private float calculatefloatValue(float input, float returned, bool resetBackToZero)
     {
         float v = returned;
         if (input > 0)
@@ -147,14 +178,17 @@ public class ShipControllerV3 : NetworkBehaviour
         }
         else
         {
-            if (returned > 0)
+            if (resetBackToZero)
             {
-                v = decrementFloat(returned, 0);
-            }
-            else if (returned < 0)
-            {
-                v = incrementFloat(returned, 0);
+                if (returned > 0)
+                {
+                    v = decrementFloat(returned, 0);
+                }
+                else if (returned < 0)
+                {
+                    v = incrementFloat(returned, 0);
 
+                }
             }
         }
         return v;
