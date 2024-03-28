@@ -6,8 +6,8 @@ public class PlanetOwnerUtilities
 
 public class PlanetTeamOwner
 {
-    public int teamID;
-    public Color teamColor;
+    private int teamID;
+    private Color teamColor;
 
     public PlanetTeamOwner(int _teamID, Color _color)
     {
@@ -28,9 +28,9 @@ public class PlanetTeamOwner
 
 public class CapturingTeam
 {
-    public int teamID;
-    public int count;
-    public Color teamColor;
+    private int teamID;
+    private int count;
+    private Color teamColor;
 
     public CapturingTeam(int _teamID, int _count, Color _color)
     {
