@@ -29,8 +29,7 @@ public class PlanetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
+        print(conversionAmount);
 
         //If a player is inside the conversion radius
         if (detectionRadius.GetTeamCountInsidRadius() == 1)
@@ -43,22 +42,17 @@ public class PlanetController : MonoBehaviour
                 {
                     conversionAmount = totalConversionRequired;
                     converted = true;
-                    detectionRadius.IsAllowedToSetColor(false);
-                    detectionRadius.SetColor(detectionRadius.GetDefaultMaterial().color);
                     planetBodyRenderer.materials[0].color = detectionRadius.GetOnlyTeamInsideRadius();
                 }
                 else
                 {
                     conversionAmount += amountToIncrease;
                 }
-                print(conversionAmount);
             }
             else
             {
                 if (planetBodyRenderer.materials[0].color != detectionRadius.GetOnlyTeamInsideRadius())
                 {
-                    detectionRadius.IsAllowedToSetColor(true);
-
                     float amountToDecrease = Time.deltaTime * convertedRate;
                     if (conversionAmount - amountToDecrease <= 0)
                     {
@@ -72,9 +66,38 @@ public class PlanetController : MonoBehaviour
                     }
                 }
             }
-        } else if (detectionRadius.GetTeamCountInsidRadius() > 1)
+        }
+        // IF no one is inside the radius
+        else if (detectionRadius.GetTeamCountInsidRadius() < 1)
         {
-            detectionRadius.IsAllowedToSetColor(true);
+            //If its partially converted (and belongs to noone)
+            if (!converted && conversionAmount > 0)
+            {
+                float amountToDecrease = Time.deltaTime * resetRate;
+
+                if (conversionAmount - amountToDecrease <= 0)
+                {
+                    conversionAmount = 0;
+                }
+                else
+                {
+                    conversionAmount -= amountToDecrease;
+                }
+            }
+            // If its partially de-converted (and belongs to a team
+            else if (converted && conversionAmount < totalConversionRequired)
+            {
+                float amountToDecrease = Time.deltaTime * resetRate;
+
+                if (conversionAmount + amountToDecrease >= totalConversionRequired)
+                {
+                    conversionAmount = totalConversionRequired;
+                }
+                else
+                {
+                    conversionAmount += amountToDecrease;
+                }
+            }
         }
 
         ////If no player is inside the radius

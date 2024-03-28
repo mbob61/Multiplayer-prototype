@@ -98,9 +98,4 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     {
         return colorMap.ElementAt(0).Key;
     }
-
-    public void IsAllowedToSetColor(bool allowed)
-    {
-        allowedToSetColor = allowed;
-    }
 }
