@@ -33,14 +33,21 @@ public class ShipControllerV3 : NetworkBehaviour
     private float rollInput, roll = 0;
 
     private ShipHelpers shipHelpers = new ShipHelpers();
+    private TeamMaterialAssigner teamMaterialAssigner;
 
     [Header("GameObject References")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletToSpawn;
+    [SerializeField] private GameObject bodyGraphic;
 
     [Header("Planet Conversion")]
-    [SerializeField] private Material teamMaterial;
     [SerializeField] private int teamID = 0;
+
+    private void Start()
+    {
+        teamMaterialAssigner = FindObjectOfType<TeamMaterialAssigner>();
+        bodyGraphic.GetComponent<Renderer>().materials[0].color = teamMaterialAssigner.GetMaterialForTeamWithID(teamID).color;
+    }
 
 
     private struct MyShipData : INetworkSerializable
@@ -161,11 +168,6 @@ public class ShipControllerV3 : NetworkBehaviour
         {
             TestServerRpc();
         }
-    }
-
-    public Material GetTeamMaterial()
-    {
-        return teamMaterial;
     }
 
     public int GetTeamID()

@@ -9,12 +9,14 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     [SerializeField] private Material defaultMaterial;
     private Dictionary<int, CapturingTeam> teamsMap;
     private Renderer detectionRenderer;
+    private TeamMaterialAssigner teamMaterialAssigner;
 
     // Start is called before the first frame update
     void Start()
     {
         detectionRenderer = GetComponent<Renderer>();
         teamsMap = new Dictionary<int, CapturingTeam>();
+        teamMaterialAssigner = FindFirstObjectByType<TeamMaterialAssigner>();
     }
 
     private void Update()
@@ -40,7 +42,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         {
             if (!teamsMap.ContainsKey(ship.GetTeamID()))
             {
-                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, ship.GetTeamMaterial().color));
+                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, teamMaterialAssigner.GetMaterialForTeamWithID(ship.GetTeamID()).color));
             }
             else
             {

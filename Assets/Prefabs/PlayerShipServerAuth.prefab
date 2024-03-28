@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3890121318
+  GlobalObjectIdHash: 738774281
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -285,7 +285,7 @@ MonoBehaviour:
   holdToThrust: 1
   firePoint: {fileID: 4676245621682701278}
   bulletToSpawn: {fileID: 7870103199084723902, guid: e7bf61e198c3c4753a99e0c1970c303f, type: 3}
-  teamMaterial: {fileID: 2100000, guid: 4aa5bf77ef32042d4a7a89d07335c6ba, type: 2}
+  bodyGraphic: {fileID: 1948340410100885977}
   teamID: 1
 --- !u!54 &1887867923077915320
 Rigidbody:
@@ -775,7 +775,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3837bf2c902804c76a9822d28f1cdc17, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
