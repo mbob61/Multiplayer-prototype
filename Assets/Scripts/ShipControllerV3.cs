@@ -32,12 +32,15 @@ public class ShipControllerV3 : NetworkBehaviour
     private float pitchInput, pitch = 0;
     private float rollInput, roll = 0;
 
+    private ShipHelpers shipHelpers = new ShipHelpers();
+
     [Header("GameObject References")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletToSpawn;
 
     [Header("Planet Conversion")]
     [SerializeField] private Material teamMaterial;
+    [SerializeField] private int teamID = 0;
 
 
     private struct MyShipData : INetworkSerializable
@@ -116,25 +119,29 @@ public class ShipControllerV3 : NetworkBehaviour
 
         if (!clientAuthorititiveMovement)
         {
-            HandleMovementServerAuth(thrustForce, upDownForce, rotation);
+            MoveAndRotateServerRpc(thrustForce, upDownForce, rotation);
         } else
         {
-            rb.MovePosition(transform.position + (thrustForce + upDownForce));
-            rb.MoveRotation(rb.rotation * rotation);
+            MoveAndRotate(thrustForce, upDownForce, rotation);
+
         }
         
     }
 
-    private void HandleMovementServerAuth(Vector3 _thrust, Vector3 _up, Quaternion _rotation)
-    {
-        DoMoveServerRpc(_thrust, _up, _rotation);
-    }
+    //private void HandleMovementServerAuth(Vector3 _thrust, Vector3 _up, Quaternion _rotation)
+    //{
+    //    DoMoveServerRpc(_thrust, _up, _rotation);
+    //}
 
     [ServerRpc]
-    private void DoMoveServerRpc(Vector3 _thrust, Vector3 _up, Quaternion rotation)
+    private void MoveAndRotateServerRpc(Vector3 _thrust, Vector3 _up, Quaternion rotation)
+    {
+        MoveAndRotate(_thrust, _up, rotation);
+    }
+
+    private void MoveAndRotate(Vector3 _thrust, Vector3 _up, Quaternion rotation)
     {
         rb.MovePosition(transform.position + (_thrust + _up));
-
         rb.MoveRotation(rb.rotation * rotation);
     }
 
@@ -163,79 +170,17 @@ public class ShipControllerV3 : NetworkBehaviour
         return teamMaterial;
     }
 
+    public int GetTeamID()
+    {
+        return teamID;
+    }
+
     private void ConvertToDecimalValues()
     {
-        thrust = calculatefloatValue(thrustInput, thrust, holdToThrust);
-        upDown = calculatefloatValue(upDownInput, upDown);
-        yaw = calculatefloatValue(yawInput, yaw);
-        pitch = calculatefloatValue(pitchInput, pitch);
-        roll = calculatefloatValue(rollInput, roll);
-    }
-
-    private float calculatefloatValue(float input, float returned)
-    {
-        return calculatefloatValue(input, returned, true);
-    }
-
-    private float calculatefloatValue(float input, float returned, bool resetBackToZero)
-    {
-        float v = returned;
-        if (input > 0)
-        {
-            v = incrementFloat(returned, 1);
-        }
-        else if (input < 0)
-        {
-            v = decrementFloat(returned, -1);
-        }
-        else
-        {
-            if (resetBackToZero)
-            {
-                if (returned > 0)
-                {
-                    v = decrementFloat(returned, 0);
-                }
-                else if (returned < 0)
-                {
-                    v = incrementFloat(returned, 0);
-
-                }
-            }
-        }
-        return v;
-    }
-
-    private float incrementFloat(float v, float target)
-    {
-        float a = v;
-        if (v < target)
-        {
-            if (v + Time.fixedDeltaTime >= target)
-            {
-                a = target;
-            }
-            else
-            {
-                a += Time.deltaTime;
-            }
-        }
-        return a;
-    }
-
-    private float decrementFloat(float v, float target)
-    {
-        if (v > target)
-        {
-            if (v - Time.fixedDeltaTime <= target)
-            {
-                v = target;
-            }
-            else
-            {
-                v -= Time.deltaTime;
-            }
-        }
-        return v;
+        thrust = shipHelpers.calculatefloatValue(thrustInput, thrust, holdToThrust);
+        upDown = shipHelpers.calculatefloatValue(upDownInput, upDown);
+        yaw = shipHelpers.calculatefloatValue(yawInput, yaw);
+        pitch = shipHelpers.calculatefloatValue(pitchInput, pitch);
+        roll = shipHelpers.calculatefloatValue(rollInput, roll);
     }
 }

@@ -7,64 +7,60 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 {
     [SerializeField] private Material contestedMaterial;
     [SerializeField] private Material defaultMaterial;
-    private Dictionary<Color, int> colorMap;
-    private bool allowedToSetColor = true;
+    private Dictionary<int, CapturingTeam> teamsMap;
     private Renderer detectionRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         detectionRenderer = GetComponent<Renderer>();
-        colorMap = new Dictionary<Color, int>();
+        teamsMap = new Dictionary<int, CapturingTeam>();
     }
 
     private void Update()
     {
-        if (allowedToSetColor)
+        if (GetTeamCountInsidRadius() > 1)
         {
-            if (GetTeamCountInsidRadius() > 1)
-            {
-                SetColor(GetContestedColor().color);
-            }
-            else if (GetTeamCountInsidRadius() == 1)
-            {
-                SetColor(GetOnlyTeamInsideRadius());
-            }
-            else
-            {
-                SetColor(GetDefaultMaterial().color);
-            }
+            SetColor(GetContestedColor().color);
+        }
+        else if (GetTeamCountInsidRadius() == 1)
+        {
+            SetColor(GetOnlyTeamInsideRadius().GetTeamColor());
+        }
+        else
+        {
+            SetColor(GetDefaultMaterial().color);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        ShipControllerV3 shipController = other.GetComponent<ShipControllerV3>();
-        if (shipController)
+        ShipControllerV3 ship = other.GetComponent<ShipControllerV3>();
+        if (ship)
         {
-            if (!colorMap.ContainsKey(shipController.GetTeamMaterial().color))
+            if (!teamsMap.ContainsKey(ship.GetTeamID()))
             {
-                colorMap.Add(shipController.GetTeamMaterial().color, 1);
+                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, ship.GetTeamMaterial().color));
             }
             else
             {
-                colorMap[shipController.GetTeamMaterial().color] = colorMap[shipController.GetTeamMaterial().color] + 1;
+                teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() + 1);
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        ShipControllerV3 shipController = other.GetComponent<ShipControllerV3>();
-        if (shipController)
+        ShipControllerV3 ship = other.GetComponent<ShipControllerV3>();
+        if (ship)
         {            
-            if (colorMap[shipController.GetTeamMaterial().color] == 1)
+            if (teamsMap[ship.GetTeamID()].GetCount() == 1)
             {
-                colorMap.Remove(shipController.GetTeamMaterial().color);
+                teamsMap.Remove(ship.GetTeamID());
             }
             else
             {
-                colorMap[shipController.GetTeamMaterial().color] = colorMap[shipController.GetTeamMaterial().color] - 1;
+                teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() - 1);
             }
         }
     }
@@ -84,18 +80,52 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         return contestedMaterial;
     }
 
-    public Dictionary<Color, int> GetColorMap()
+    public Dictionary<int, CapturingTeam> GetTeamsMap()
     {
-        return colorMap;
+        return teamsMap;
     }
 
     public int GetTeamCountInsidRadius()
     {
-        return colorMap.Keys.Count;
+        return teamsMap.Keys.Count;
     }
 
-    public Color GetOnlyTeamInsideRadius()
+    public CapturingTeam GetOnlyTeamInsideRadius()
     {
-        return colorMap.ElementAt(0).Key;
+        return teamsMap.ElementAt(0).Value;
+    }
+}
+
+public class CapturingTeam
+{
+    public int teamID;
+    public int count;
+    public Color teamColor;
+
+    public CapturingTeam(int _teamID, int _count, Color _color)
+    {
+        teamID = _teamID;
+        count = _count;
+        teamColor = _color;
+    }
+
+    public int GetTeamID()
+    {
+        return teamID;
+    }
+
+    public int GetCount()
+    {
+        return count;
+    }
+
+    public Color GetTeamColor()
+    {
+        return teamColor;
+    }
+
+    public void SetCount(int _count)
+    {
+        count = _count;
     }
 }

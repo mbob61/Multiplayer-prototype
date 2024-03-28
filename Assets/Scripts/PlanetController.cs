@@ -17,19 +17,26 @@ public class PlanetController : MonoBehaviour
 
     private float conversionAmount = 0;
     private bool converted = false;
-    private int team = -1;
+    private PlanetTeamOwner owningTeam;
     private Renderer planetBodyRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         planetBodyRenderer = planetBody.GetComponent<Renderer>();
+        resetOwningTeam();
+    }
+
+    private void resetOwningTeam()
+    {
+        owningTeam = new PlanetTeamOwner(-1, defaultMaterial.color);
     }
 
     // Update is called once per frame
     void Update()
     {
-        print(conversionAmount);
+        //print(conversionAmount);
+        DumpToConsole(owningTeam);
 
         //If a player is inside the conversion radius
         if (detectionRadius.GetTeamCountInsidRadius() == 1)
@@ -42,23 +49,30 @@ public class PlanetController : MonoBehaviour
                 {
                     conversionAmount = totalConversionRequired;
                     converted = true;
-                    planetBodyRenderer.materials[0].color = detectionRadius.GetOnlyTeamInsideRadius();
+                    CapturingTeam capturingTeam = detectionRadius.GetOnlyTeamInsideRadius();
+                    owningTeam = new PlanetTeamOwner(capturingTeam.GetTeamID(), capturingTeam.GetTeamColor());
+
+                    planetBodyRenderer.materials[0].color = owningTeam.GetTeamColor();
+                   
                 }
                 else
                 {
                     conversionAmount += amountToIncrease;
                 }
             }
+            // If the planet owned by a team
             else
             {
-                if (planetBodyRenderer.materials[0].color != detectionRadius.GetOnlyTeamInsideRadius())
+                // If the owning team is different from the team trying to take it
+                if (owningTeam.GetTeamID() != detectionRadius.GetOnlyTeamInsideRadius().GetTeamID())
                 {
                     float amountToDecrease = Time.deltaTime * convertedRate;
                     if (conversionAmount - amountToDecrease <= 0)
                     {
                         conversionAmount = 0;
                         converted = false;
-                        planetBodyRenderer.materials[0].color = defaultMaterial.color;
+                        resetOwningTeam();
+                        planetBodyRenderer.materials[0].color = owningTeam.GetTeamColor();
                     }
                     else
                     {
@@ -99,24 +113,33 @@ public class PlanetController : MonoBehaviour
                 }
             }
         }
+    }
 
-        ////If no player is inside the radius
-        //else
-        //{
-        //    // If the planet is unconverted, tick down the radius
-        //    if (!converted)
-        //    {
-        //        float amountToDecrease = Time.deltaTime * resetRate;
+    public static void DumpToConsole(object obj)
+    {
+        var output = JsonUtility.ToJson(obj, true);
+        Debug.Log(output);
+    }
+}
 
-        //        if (conversionAmount - amountToDecrease <= 0)
-        //        {
-        //            conversionAmount = 0;
-        //        }
-        //        else
-        //        {
-        //            conversionAmount -= amountToDecrease;
-        //        }
-        //    }
-        //}
+public class PlanetTeamOwner
+{
+    public int teamID;
+    public Color teamColor;
+
+    public PlanetTeamOwner(int _teamID, Color _color)
+    {
+        teamID = _teamID;
+        teamColor = _color;
+    }
+
+    public int GetTeamID()
+    {
+        return teamID;
+    }
+
+    public Color GetTeamColor()
+    {
+        return teamColor;
     }
 }
