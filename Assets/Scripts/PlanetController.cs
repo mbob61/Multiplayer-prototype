@@ -8,6 +8,7 @@ public class PlanetController : MonoBehaviour
     [Header("GameObject References")]
     [SerializeField] private PlanetDetectionRadiusController detectionRadius;
     [SerializeField] private GameObject planetBody;
+    [SerializeField] private GameObject turretToSpawn;
 
     [Header("Conversion Values")]
     [SerializeField] private float totalConversionRequired = 10;
@@ -42,36 +43,28 @@ public class PlanetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(conversionAmount);
-
         //If a player is inside the conversion radius
         if (detectionRadius.GetTeamCountInsidRadius() == 1)
         {
             occupiedState = OCCUPIED_STATE.single;
-            
         }
-        // IF no one is inside the radius
+        //If no one is inside the radius
         else if (detectionRadius.GetTeamCountInsidRadius() < 1)
         {
             occupiedState = OCCUPIED_STATE.empty;
         } else
         {
+            // basically the "do nothing" state as we don't want any logic to fire when the planet is contested
             occupiedState = OCCUPIED_STATE.multiple;
         }
 
-        ActOnConversionAndOccupiedState(occupiedState, conversionState);
+        OccupiedAndConversionStateMachine(occupiedState, conversionState);
+        SpawnTurretsForConvertedPlanet();
 
-        //if (converted)
-        //{
-        //    timeSinceConversion += Time.deltaTime;
-        //} else
-        //{
-        //    timeSinceConversion = 0;
-        //}
-
+        
     }
 
-    private void ActOnConversionAndOccupiedState(OCCUPIED_STATE _occupiedState, CONVERSION_STATE _conversionState)
+    private void OccupiedAndConversionStateMachine(OCCUPIED_STATE _occupiedState, CONVERSION_STATE _conversionState)
     { 
         switch (_occupiedState)
         {
@@ -186,9 +179,32 @@ public class PlanetController : MonoBehaviour
         }
     }
 
-    private void decrementConversionBackToZero()
+    private void SpawnTurretsForConvertedPlanet()
     {
-
+        if (conversionState == CONVERSION_STATE.converted)
+        {
+            if (timeSinceConversion + Time.deltaTime >= timeUntilSpawnDefences)
+            {
+                GameObject spawnedTurret = Instantiate(turretToSpawn, transform.position, Quaternion.identity);
+                spawnedTurret.transform.parent = transform;
+                timeSinceConversion = 0;
+            }
+            else
+            {
+                timeSinceConversion += Time.deltaTime;
+            }
+        }
+        else
+        {
+            timeSinceConversion = 0;
+            foreach (Transform transform in transform)
+            {
+                if (transform.tag == "Turret")
+                {
+                    Destroy(transform.gameObject);
+                }
+            }
+        }
     }
 
     private enum OCCUPIED_STATE

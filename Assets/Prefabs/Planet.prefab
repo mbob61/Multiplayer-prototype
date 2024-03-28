@@ -2245,7 +2245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2430318870
+  GlobalObjectIdHash: 1007824785
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2299,6 +2299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionRadius: {fileID: 7990014326866303101}
   planetBody: {fileID: 1594228374228917461}
+  turretToSpawn: {fileID: 587529551418073239, guid: 1434652759a60486499b159ba82c7b8e, type: 3}
   totalConversionRequired: 10
   convertedRate: 2
   resetRate: 2
