@@ -16,6 +16,7 @@ public class ShipControllerV3 : NetworkBehaviour
     [SerializeField] private float rollModifier = 1;
 
     [Header("Movement Types")]
+    [SerializeField] private bool requireNetwork = true;
     [SerializeField] private bool clientAuthorititiveMovement = false;
     [SerializeField] private bool planeControls = false; 
     [SerializeField] private bool airshipControls = true; 
@@ -34,6 +35,9 @@ public class ShipControllerV3 : NetworkBehaviour
     [Header("GameObject References")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletToSpawn;
+
+    [Header("Planet Conversion")]
+    [SerializeField] private Material teamMaterial;
 
 
     private struct MyShipData : INetworkSerializable
@@ -97,7 +101,10 @@ public class ShipControllerV3 : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsOwner) return;
+        if (requireNetwork)
+        {
+            if (!IsOwner) return;
+        }
 
         ConvertToDecimalValues();
 
@@ -149,6 +156,11 @@ public class ShipControllerV3 : NetworkBehaviour
         {
             TestServerRpc();
         }
+    }
+
+    public Material GetTeamMaterial()
+    {
+        return teamMaterial;
     }
 
     private void ConvertToDecimalValues()
