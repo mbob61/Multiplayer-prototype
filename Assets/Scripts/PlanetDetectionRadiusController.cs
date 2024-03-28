@@ -7,7 +7,6 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 {
     [SerializeField] private Material contestedMaterial;
     [SerializeField] private Material defaultMaterial;
-    private bool isInteracting = false;
     private Dictionary<Color, int> colorMap;
     private bool allowedToSetColor = true;
 
@@ -21,11 +20,11 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     {
         if (allowedToSetColor)
         {
-            if (colorMap.Keys.Count > 1)
+            if (GetTeamCountInsidRadius() > 1)
             {
                 SetColor(GetContestedColor().color);
             }
-            else if (colorMap.Keys.Count == 1)
+            else if (GetTeamCountInsidRadius() == 1)
             {
                 SetColor(colorMap.ElementAt(0).Key);
             }
@@ -42,8 +41,6 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         ShipControllerV3 shipController = other.GetComponent<ShipControllerV3>();
         if (shipController)
         {
-            isInteracting = true;
-
             if (!colorMap.ContainsKey(shipController.GetTeamMaterial().color))
             {
                 colorMap.Add(shipController.GetTeamMaterial().color, 1);
@@ -59,9 +56,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     {
         ShipControllerV3 shipController = other.GetComponent<ShipControllerV3>();
         if (shipController)
-        {
-            isInteracting = false;
-            
+        {            
             if (colorMap[shipController.GetTeamMaterial().color] == 1)
             {
                 colorMap.Remove(shipController.GetTeamMaterial().color);
@@ -93,9 +88,9 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         return colorMap;
     }
 
-    public bool IsInteractingWithAPlayer()
+    public int GetTeamCountInsidRadius()
     {
-        return isInteracting;
+        return colorMap.Keys.Count;
     }
 
     public void IsAllowedToSetColor(bool allowed)

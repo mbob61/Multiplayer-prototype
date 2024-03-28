@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlanetController : MonoBehaviour
 {
+    [Header("GameObject References")]
     [SerializeField] private PlanetDetectionRadiusController detectionRadius;
+    [SerializeField] private GameObject planetBody;
 
-    private bool converted = false;
+    [Header("Conversion Values")]
+    [SerializeField] private float totalConversionRequired = 10;
+    [SerializeField] private float convertedRate = 1.0f;
+    [SerializeField] private float resetRate = 2.0f;
+
     private float conversionAmount = 0;
-    private float convertedRate = 1.0f;
-    private float resetRate = 2.0f;
+    private bool converted = false;
     private int team = -1;
 
     // Start is called before the first frame update
@@ -25,26 +31,29 @@ public class PlanetController : MonoBehaviour
 
 
         //If a player is inside the conversion radius
-        if (detectionRadius.IsInteractingWithAPlayer())
-        {
-            // If the planet is not currently owned by a player
-            if (!converted)
+            if (detectionRadius.GetTeamCountInsidRadius() == 1)
             {
-                float amountToIncrease = Time.deltaTime * convertedRate;
-                if (conversionAmount + amountToIncrease >= 100)
+                // If the planet is not currently owned by a player
+                if (!converted)
                 {
-                    conversionAmount = 100f;
-                    converted = true;
-                    detectionRadius.IsAllowedToSetColor(false);
-                    detectionRadius.SetColor(detectionRadius.GetDefaultMaterial().color);
-                }
-                else
-                {
-                    conversionAmount += amountToIncrease;
-                }
+                    float amountToIncrease = Time.deltaTime * convertedRate;
+                    if (conversionAmount + amountToIncrease >= totalConversionRequired)
+                    {
+                        conversionAmount = totalConversionRequired;
+                        converted = true;
+                        detectionRadius.IsAllowedToSetColor(false);
+                        detectionRadius.SetColor(detectionRadius.GetDefaultMaterial().color);
+                        planetBody.GetComponent<Renderer>().materials[0].color = detectionRadius.GetColorMap().Keys.ElementAt(0);
+                    }
+                    else
+                    {
+                        conversionAmount += amountToIncrease;
+                    }
+                    print(conversionAmount);
 
+                }
             }
-        }
+        
         ////If no player is inside the radius
         //else
         //{
