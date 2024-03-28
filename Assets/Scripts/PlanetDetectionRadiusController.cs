@@ -96,36 +96,3 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     }
 }
 
-public class CapturingTeam
-{
-    public int teamID;
-    public int count;
-    public Color teamColor;
-
-    public CapturingTeam(int _teamID, int _count, Color _color)
-    {
-        teamID = _teamID;
-        count = _count;
-        teamColor = _color;
-    }
-
-    public int GetTeamID()
-    {
-        return teamID;
-    }
-
-    public int GetCount()
-    {
-        return count;
-    }
-
-    public Color GetTeamColor()
-    {
-        return teamColor;
-    }
-
-    public void SetCount(int _count)
-    {
-        count = _count;
-    }
-}

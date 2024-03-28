@@ -36,7 +36,7 @@ public class PlanetController : MonoBehaviour
     void Update()
     {
         //print(conversionAmount);
-        DumpToConsole(owningTeam);
+        DebugUtilities.DumpToConsole(owningTeam);
 
         //If a player is inside the conversion radius
         if (detectionRadius.GetTeamCountInsidRadius() == 1)
@@ -53,7 +53,7 @@ public class PlanetController : MonoBehaviour
                     owningTeam = new PlanetTeamOwner(capturingTeam.GetTeamID(), capturingTeam.GetTeamColor());
 
                     planetBodyRenderer.materials[0].color = owningTeam.GetTeamColor();
-                   
+
                 }
                 else
                 {
@@ -113,33 +113,5 @@ public class PlanetController : MonoBehaviour
                 }
             }
         }
-    }
-
-    public static void DumpToConsole(object obj)
-    {
-        var output = JsonUtility.ToJson(obj, true);
-        Debug.Log(output);
-    }
-}
-
-public class PlanetTeamOwner
-{
-    public int teamID;
-    public Color teamColor;
-
-    public PlanetTeamOwner(int _teamID, Color _color)
-    {
-        teamID = _teamID;
-        teamColor = _color;
-    }
-
-    public int GetTeamID()
-    {
-        return teamID;
-    }
-
-    public Color GetTeamColor()
-    {
-        return teamColor;
     }
 }

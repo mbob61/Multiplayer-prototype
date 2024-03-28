@@ -151,8 +151,6 @@ public class ShipControllerV3 : NetworkBehaviour
         Debug.Log($"ServerRPc - {OwnerClientId}");
         GameObject spawnedObjectTransform = Instantiate(bulletToSpawn, firePoint.position, Quaternion.identity);
         spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
-
-
     }
 
     public void RandonInteraction(InputAction.CallbackContext context)
