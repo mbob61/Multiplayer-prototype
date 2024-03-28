@@ -9,10 +9,12 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     [SerializeField] private Material defaultMaterial;
     private Dictionary<Color, int> colorMap;
     private bool allowedToSetColor = true;
+    private Renderer detectionRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
+        detectionRenderer = GetComponent<Renderer>();
         colorMap = new Dictionary<Color, int>();
     }
 
@@ -26,14 +28,13 @@ public class PlanetDetectionRadiusController : MonoBehaviour
             }
             else if (GetTeamCountInsidRadius() == 1)
             {
-                SetColor(colorMap.ElementAt(0).Key);
+                SetColor(GetOnlyTeamInsideRadius());
             }
             else
             {
                 SetColor(GetDefaultMaterial().color);
             }
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -70,7 +71,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 
     public void SetColor(Color c)
     {
-        GetComponent<Renderer>().materials[0].color = c;
+        detectionRenderer.materials[0].color = c;
     }
 
     public Material GetDefaultMaterial()
@@ -91,6 +92,11 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     public int GetTeamCountInsidRadius()
     {
         return colorMap.Keys.Count;
+    }
+
+    public Color GetOnlyTeamInsideRadius()
+    {
+        return colorMap.ElementAt(0).Key;
     }
 
     public void IsAllowedToSetColor(bool allowed)

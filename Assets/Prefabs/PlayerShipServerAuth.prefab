@@ -184,12 +184,14 @@ MonoBehaviour:
   yawModifier: 20
   pitchModifier: 20
   rollModifier: 20
+  requireNetwork: 1
   clientAuthorititiveMovement: 0
   planeControls: 0
   airshipControls: 1
   holdToThrust: 1
   firePoint: {fileID: 4676245621682701278}
   bulletToSpawn: {fileID: 7870103199084723902, guid: e7bf61e198c3c4753a99e0c1970c303f, type: 3}
+  teamMaterial: {fileID: 2100000, guid: 4aa5bf77ef32042d4a7a89d07335c6ba, type: 2}
 --- !u!54 &1887867923077915320
 Rigidbody:
   m_ObjectHideFlags: 0

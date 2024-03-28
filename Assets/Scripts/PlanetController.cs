@@ -13,15 +13,17 @@ public class PlanetController : MonoBehaviour
     [SerializeField] private float totalConversionRequired = 10;
     [SerializeField] private float convertedRate = 1.0f;
     [SerializeField] private float resetRate = 2.0f;
+    [SerializeField] private Material defaultMaterial;
 
     private float conversionAmount = 0;
     private bool converted = false;
     private int team = -1;
+    private Renderer planetBodyRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        planetBodyRenderer = planetBody.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -31,29 +33,50 @@ public class PlanetController : MonoBehaviour
 
 
         //If a player is inside the conversion radius
-            if (detectionRadius.GetTeamCountInsidRadius() == 1)
+        if (detectionRadius.GetTeamCountInsidRadius() == 1)
+        {
+            // If the planet is not currently owned by a player
+            if (!converted)
             {
-                // If the planet is not currently owned by a player
-                if (!converted)
+                float amountToIncrease = Time.deltaTime * convertedRate;
+                if (conversionAmount + amountToIncrease >= totalConversionRequired)
                 {
-                    float amountToIncrease = Time.deltaTime * convertedRate;
-                    if (conversionAmount + amountToIncrease >= totalConversionRequired)
+                    conversionAmount = totalConversionRequired;
+                    converted = true;
+                    detectionRadius.IsAllowedToSetColor(false);
+                    detectionRadius.SetColor(detectionRadius.GetDefaultMaterial().color);
+                    planetBodyRenderer.materials[0].color = detectionRadius.GetOnlyTeamInsideRadius();
+                }
+                else
+                {
+                    conversionAmount += amountToIncrease;
+                }
+                print(conversionAmount);
+            }
+            else
+            {
+                if (planetBodyRenderer.materials[0].color != detectionRadius.GetOnlyTeamInsideRadius())
+                {
+                    detectionRadius.IsAllowedToSetColor(true);
+
+                    float amountToDecrease = Time.deltaTime * convertedRate;
+                    if (conversionAmount - amountToDecrease <= 0)
                     {
-                        conversionAmount = totalConversionRequired;
-                        converted = true;
-                        detectionRadius.IsAllowedToSetColor(false);
-                        detectionRadius.SetColor(detectionRadius.GetDefaultMaterial().color);
-                        planetBody.GetComponent<Renderer>().materials[0].color = detectionRadius.GetColorMap().Keys.ElementAt(0);
+                        conversionAmount = 0;
+                        converted = false;
+                        planetBodyRenderer.materials[0].color = defaultMaterial.color;
                     }
                     else
                     {
-                        conversionAmount += amountToIncrease;
+                        conversionAmount -= amountToDecrease;
                     }
-                    print(conversionAmount);
-
                 }
             }
-        
+        } else if (detectionRadius.GetTeamCountInsidRadius() > 1)
+        {
+            detectionRadius.IsAllowedToSetColor(true);
+        }
+
         ////If no player is inside the radius
         //else
         //{

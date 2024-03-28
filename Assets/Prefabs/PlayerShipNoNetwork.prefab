@@ -114,15 +114,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4435764362367772068}
-  - component: {fileID: 3262638450200589460}
+  - component: {fileID: 2200849871037067074}
   - component: {fileID: 6140991232041822545}
   - component: {fileID: 1887867923077915320}
   - component: {fileID: 8359536130548348142}
-  - component: {fileID: -3623883685185934236}
-  - component: {fileID: 640563756090532649}
   - component: {fileID: 9091756229383564917}
   m_Layer: 0
-  m_Name: PlayerShipClientAuth
+  m_Name: PlayerShipNoNetwork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,19 +146,19 @@ Transform:
   - {fileID: 1413689022238234916}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3262638450200589460
+--- !u!114 &2200849871037067074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3643565664441265536}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1574667797
+  GlobalObjectIdHash: 2195209529
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -187,7 +185,7 @@ MonoBehaviour:
   yawModifier: 20
   pitchModifier: 20
   rollModifier: 20
-  requireNetwork: 1
+  requireNetwork: 0
   clientAuthorititiveMovement: 1
   planeControls: 0
   airshipControls: 1
@@ -348,49 +346,6 @@ MonoBehaviour:
   m_DefaultActionMap: ShipControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &-3623883685185934236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3643565664441265536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
---- !u!114 &640563756090532649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3643565664441265536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &9091756229383564917
 CapsuleCollider:
   m_ObjectHideFlags: 0

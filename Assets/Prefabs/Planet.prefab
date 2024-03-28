@@ -2302,3 +2302,4 @@ MonoBehaviour:
   totalConversionRequired: 10
   convertedRate: 2
   resetRate: 2
+  defaultMaterial: {fileID: 2100000, guid: 5ce4d4c4148944cd79ac3965a2ae8951, type: 2}
