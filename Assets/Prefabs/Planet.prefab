@@ -994,6 +994,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2641643234391303173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6048450054135103287}
+  - component: {fileID: 3603469420392607278}
+  m_Layer: 0
+  m_Name: TurretSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6048450054135103287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2641643234391303173}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8313367699155597179}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3603469420392607278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2641643234391303173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a9fcb4b7ef547baaa50cbdf164bf26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turret: {fileID: 587529551418073239, guid: 1434652759a60486499b159ba82c7b8e, type: 3}
+  planetBody: {fileID: 1594228374228917461}
 --- !u!1 &2748289435280284456
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,6 +2277,7 @@ Transform:
   - {fileID: 1668595555241491987}
   - {fileID: 5974250158756274578}
   - {fileID: 661439638927469531}
+  - {fileID: 6048450054135103287}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3752843513514824667
@@ -2299,7 +2346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionRadius: {fileID: 7990014326866303101}
   planetBody: {fileID: 1594228374228917461}
-  turretToSpawn: {fileID: 587529551418073239, guid: 1434652759a60486499b159ba82c7b8e, type: 3}
+  turretSpawner: {fileID: 3603469420392607278}
   totalConversionRequired: 10
   convertedRate: 2
   resetRate: 2

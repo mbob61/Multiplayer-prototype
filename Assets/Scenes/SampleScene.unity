@@ -687,6 +687,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6140991232041822545, guid: cf630f3bf26cd4fc3b2618851e81d838, type: 3}
+      propertyPath: teamID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140991232041822545, guid: cf630f3bf26cd4fc3b2618851e81d838, type: 3}
       propertyPath: teamMaterial
       value: 
       objectReference: {fileID: 2100000, guid: a2a55164e6d344e21a92d5fa2451efce, type: 2}
@@ -2444,6 +2448,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TeamMaterialAssigner
       objectReference: {fileID: 0}
+    - target: {fileID: 4704608323294328946, guid: c2a0b30f0a3c24cc396badc6bfc4d02b, type: 3}
+      propertyPath: teamMaterials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704608323294328946, guid: c2a0b30f0a3c24cc396badc6bfc4d02b, type: 3}
+      propertyPath: teamMaterials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 48830113720cf4b45ad56ea2f65c3585, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

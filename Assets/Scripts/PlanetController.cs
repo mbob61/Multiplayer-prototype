@@ -8,7 +8,7 @@ public class PlanetController : MonoBehaviour
     [Header("GameObject References")]
     [SerializeField] private PlanetDetectionRadiusController detectionRadius;
     [SerializeField] private GameObject planetBody;
-    [SerializeField] private GameObject turretToSpawn;
+    [SerializeField] private PlanetTurretSpawner turretSpawner;
 
     [Header("Conversion Values")]
     [SerializeField] private float totalConversionRequired = 10;
@@ -17,12 +17,14 @@ public class PlanetController : MonoBehaviour
     [SerializeField] private Material defaultMaterial;
 
     private float conversionAmount = 0;
-    private bool converted = false;
     private PlanetTeamOwner owningTeam;
     private PlanetTeamOwner currentlyConvertingTeam;
     private Renderer planetBodyRenderer;
     private float timeSinceConversion = 0;
     private float timeUntilSpawnDefences = 5.0f;
+
+    private bool spawnedTurrets = false;
+
 
     private OCCUPIED_STATE occupiedState = OCCUPIED_STATE.empty;
     private CONVERSION_STATE conversionState = CONVERSION_STATE.not_converted;
@@ -59,7 +61,11 @@ public class PlanetController : MonoBehaviour
         }
 
         OccupiedAndConversionStateMachine(occupiedState, conversionState);
-        SpawnTurretsForConvertedPlanet();
+
+        if (!spawnedTurrets)
+        {
+            SpawnTurretsForConvertedPlanet();
+        }
 
         
     }
@@ -185,8 +191,16 @@ public class PlanetController : MonoBehaviour
         {
             if (timeSinceConversion + Time.deltaTime >= timeUntilSpawnDefences)
             {
-                GameObject spawnedTurret = Instantiate(turretToSpawn, transform.position, Quaternion.identity);
-                spawnedTurret.transform.parent = transform;
+                List<TurretSpawnPositionData> turretData = new List<TurretSpawnPositionData>();
+                turretData.Add(new TurretSpawnPositionData(Vector3.zero, new Vector3(0, 10.5f, 0)));
+                turretData.Add(new TurretSpawnPositionData(new Vector3(90, 0, 0), new Vector3(0, 0, 10.5f)));
+                turretData.Add(new TurretSpawnPositionData(new Vector3(180, 0, 0), new Vector3(0, -10.5f, 0)));
+                turretData.Add(new TurretSpawnPositionData(new Vector3(270, 0, 0), new Vector3(0, 0, -10.5f)));
+                turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 90), new Vector3(-10.5f, 0, 0)));
+                turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 270), new Vector3(10.5f, 0, 0)));
+
+                spawnedTurrets = true;
+                turretSpawner.SpawnTurrets(turretData);
                 timeSinceConversion = 0;
             }
             else
@@ -197,13 +211,8 @@ public class PlanetController : MonoBehaviour
         else
         {
             timeSinceConversion = 0;
-            foreach (Transform transform in transform)
-            {
-                if (transform.tag == "Turret")
-                {
-                    Destroy(transform.gameObject);
-                }
-            }
+            spawnedTurrets = false;
+            turretSpawner.DestroyTurrets();
         }
     }
 
