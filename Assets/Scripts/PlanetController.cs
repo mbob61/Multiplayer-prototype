@@ -191,16 +191,17 @@ public class PlanetController : MonoBehaviour
         {
             if (timeSinceConversion + Time.deltaTime >= timeUntilSpawnDefences)
             {
-                List<TurretSpawnPositionData> turretData = new List<TurretSpawnPositionData>();
-                turretData.Add(new TurretSpawnPositionData(Vector3.zero, new Vector3(0, 10.5f, 0)));
-                turretData.Add(new TurretSpawnPositionData(new Vector3(90, 0, 0), new Vector3(0, 0, 10.5f)));
-                turretData.Add(new TurretSpawnPositionData(new Vector3(180, 0, 0), new Vector3(0, -10.5f, 0)));
-                turretData.Add(new TurretSpawnPositionData(new Vector3(270, 0, 0), new Vector3(0, 0, -10.5f)));
-                turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 90), new Vector3(-10.5f, 0, 0)));
-                turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 270), new Vector3(10.5f, 0, 0)));
+                //List<TurretSpawnPositionData> turretData = new List<TurretSpawnPositionData>();
+                //turretData.Add(new TurretSpawnPositionData(Vector3.zero));
+                //turretData.Add(new TurretSpawnPositionData(new Vector3(90, 0, 0)));
+                //turretData.Add(new TurretSpawnPositionData(new Vector3(180, 0, 0)));
+                //turretData.Add(new TurretSpawnPositionData(new Vector3(270, 0, 0)));
+                //turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 90)));
+                //turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 270)));
 
                 spawnedTurrets = true;
-                turretSpawner.SpawnTurrets(turretData, owningTeam.GetTeamID());
+                //turretSpawner.SpawnTurrets(turretData, owningTeam.GetTeamID());
+                turretSpawner.SpawnTurrets(owningTeam.GetTeamID());
                 timeSinceConversion = 0;
             }
             else
