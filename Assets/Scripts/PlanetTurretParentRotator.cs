@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretParentRotator : MonoBehaviour
+public class PlanetTurretParentRotator : MonoBehaviour
 {
     private bool canRotate;
     [SerializeField] private Vector3 rotationAxis;
