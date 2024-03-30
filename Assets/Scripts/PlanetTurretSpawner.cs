@@ -17,12 +17,18 @@ public class PlanetTurretSpawner : MonoBehaviour
 
     }
 
-    public void SpawnTurrets(List<TurretSpawnPositionData> spawnData)
+    public void SpawnTurrets(List<TurretSpawnPositionData> spawnData, int teamID)
     {
         foreach (TurretSpawnPositionData data in spawnData){
             GameObject spawnedTurret = Instantiate(turret, transform.position, Quaternion.Euler(data.GetRotation()));
             spawnedTurret.transform.parent = transform.parent.transform;
-            spawnedTurret.gameObject.transform.position = planetPosition + (spawnedTurret.transform.up * ((planetBody.transform.localScale.x / 2) + (turret.transform.localScale.x / 2)));
+
+            float planetEdge = (planetBody.transform.localScale.x / 2) * transform.parent.transform.localScale.x;
+            float halfTurretWidth = (turret.transform.localScale.x / 2);
+
+
+            spawnedTurret.gameObject.transform.position = planetPosition + (spawnedTurret.transform.up * (planetEdge + halfTurretWidth));
+            spawnedTurret.GetComponent<TurretController>().SetTeamToProtect(teamID);
             spawnedTurrets.Add(spawnedTurret);
         }
     }

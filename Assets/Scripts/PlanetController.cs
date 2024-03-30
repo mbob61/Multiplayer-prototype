@@ -200,7 +200,7 @@ public class PlanetController : MonoBehaviour
                 turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 270), new Vector3(10.5f, 0, 0)));
 
                 spawnedTurrets = true;
-                turretSpawner.SpawnTurrets(turretData);
+                turretSpawner.SpawnTurrets(turretData, owningTeam.GetTeamID());
                 timeSinceConversion = 0;
             }
             else

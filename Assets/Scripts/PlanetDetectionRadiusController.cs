@@ -69,7 +69,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 
     public void SetColor(Color c)
     {
-        detectionRenderer.materials[0].color = c;
+        detectionRenderer.materials[0].color = new Color(c.r, c.g, c.b, 0.25f);
     }
 
     public Material GetDefaultMaterial()
