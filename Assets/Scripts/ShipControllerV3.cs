@@ -136,10 +136,6 @@ public class ShipControllerV3 : NetworkBehaviour
         
     }
 
-    //private void HandleMovementServerAuth(Vector3 _thrust, Vector3 _up, Quaternion _rotation)
-    //{
-    //    DoMoveServerRpc(_thrust, _up, _rotation);
-    //}
 
     [ServerRpc]
     private void MoveAndRotateServerRpc(Vector3 _thrust, Vector3 _up, Quaternion rotation)

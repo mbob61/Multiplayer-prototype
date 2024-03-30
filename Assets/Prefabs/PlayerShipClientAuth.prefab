@@ -182,11 +182,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1887867923077915320}
-  thrustModifier: 5
-  upDownModifier: 5
-  yawModifier: 20
-  pitchModifier: 20
-  rollModifier: 20
+  thrustModifier: 10
+  upDownModifier: 10
+  yawModifier: 30
+  pitchModifier: 30
+  rollModifier: 30
   requireNetwork: 1
   clientAuthorititiveMovement: 1
   planeControls: 0

@@ -1544,7 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAxis: {x: 0, y: 1, z: 0}
-  speed: 5
+  speed: 1
 --- !u!1 &4508180058064643772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,7 +1815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAxis: {x: 1, y: 0, z: 0}
-  speed: 5
+  speed: 1
 --- !u!1 &5200209535255160444
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,7 +2071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAxis: {x: 0, y: 0, z: 1}
-  speed: 5
+  speed: 1
 --- !u!1 &6339026983583916950
 GameObject:
   m_ObjectHideFlags: 0

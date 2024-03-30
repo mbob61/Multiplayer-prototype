@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 738774281
+  GlobalObjectIdHash: 3890121318
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -273,11 +273,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1887867923077915320}
-  thrustModifier: 5
-  upDownModifier: 5
-  yawModifier: 20
-  pitchModifier: 20
-  rollModifier: 20
+  thrustModifier: 10
+  upDownModifier: 10
+  yawModifier: 30
+  pitchModifier: 30
+  rollModifier: 30
   requireNetwork: 1
   clientAuthorititiveMovement: 0
   planeControls: 0
