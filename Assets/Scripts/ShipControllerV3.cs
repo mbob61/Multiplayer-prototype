@@ -37,7 +37,8 @@ public class ShipControllerV3 : NetworkBehaviour
 
     [Header("GameObject References")]
     [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject bulletToSpawn;
+    [SerializeField] private GameObject networkedBullet;
+    [SerializeField] private GameObject nonNetworkedBullet;
     [SerializeField] private GameObject bodyGraphic;
 
     [Header("Planet Conversion")]
@@ -152,22 +153,38 @@ public class ShipControllerV3 : NetworkBehaviour
         rb.MoveRotation(rb.rotation * rotation);
     }
 
-    [ServerRpc]
-    private void TestServerRpc()
+    public void FireBullet(InputAction.CallbackContext context)
     {
-        Debug.Log($"ServerRPc - {OwnerClientId}");
-        GameObject spawnedObjectTransform = Instantiate(bulletToSpawn, firePoint.position, Quaternion.identity);
-        spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
-    }
-
-    public void RandonInteraction(InputAction.CallbackContext context)
-    {
-        if (!IsOwner) return;
+        if (requireNetwork)
+        {
+            if (!IsOwner) return;
+        }
 
         if (context.performed)
         {
-            TestServerRpc();
+            if (!clientAuthorititiveMovement)
+            {
+                CreateBulletServerRpc();
+            }
+            else
+            {
+                CreateBullet();
+            }
         }
+    }
+
+    [ServerRpc]
+    private void CreateBulletServerRpc()
+    {
+        Debug.Log($"ServerRPc - {OwnerClientId}");
+
+        GameObject spawnedObjectTransform = Instantiate(networkedBullet, firePoint.position, Quaternion.identity);
+        spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+    }
+
+    private void CreateBullet()
+    {
+        GameObject spawnedObjectTransform = Instantiate(nonNetworkedBullet, firePoint.position, Quaternion.identity);
     }
 
     public int GetTeamID()

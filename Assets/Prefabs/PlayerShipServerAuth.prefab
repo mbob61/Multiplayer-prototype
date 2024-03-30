@@ -284,7 +284,8 @@ MonoBehaviour:
   airshipControls: 1
   holdToThrust: 1
   firePoint: {fileID: 4676245621682701278}
-  bulletToSpawn: {fileID: 7870103199084723902, guid: e7bf61e198c3c4753a99e0c1970c303f, type: 3}
+  networkedBullet: {fileID: 7870103199084723902, guid: e7bf61e198c3c4753a99e0c1970c303f, type: 3}
+  nonNetworkedBullet: {fileID: 7870103199084723902, guid: 30527c6ec97624955a06c4d250da0649, type: 3}
   bodyGraphic: {fileID: 1948340410100885977}
   teamID: 1
 --- !u!54 &1887867923077915320
@@ -423,7 +424,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6140991232041822545}
         m_TargetAssemblyTypeName: ShipControllerV3, Assembly-CSharp
-        m_MethodName: RandonInteraction
+        m_MethodName: FireBullet
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
