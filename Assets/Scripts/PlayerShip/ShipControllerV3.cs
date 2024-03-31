@@ -173,14 +173,16 @@ public class ShipControllerV3 : NetworkBehaviour
     private void CreateBulletServerRpc()
     {
         Debug.Log($"ServerRPc - {OwnerClientId}");
+        GameObject spawnedBullet = Instantiate(networkedBullet, firePoint.position, Quaternion.identity);
 
-        GameObject spawnedObjectTransform = Instantiate(networkedBullet, firePoint.position, Quaternion.identity);
-        spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+        spawnedBullet.GetComponent<NetworkObject>().Spawn(true);
+        spawnedBullet.GetComponent<Rigidbody>().AddForce(spawnedBullet.transform.forward * 20.0f, ForceMode.Impulse);
     }
 
     private void CreateBullet()
     {
-        GameObject spawnedObjectTransform = Instantiate(nonNetworkedBullet, firePoint.position, Quaternion.identity);
+        GameObject spawnedBullet = Instantiate(nonNetworkedBullet, firePoint.position, Quaternion.identity);
+        spawnedBullet.GetComponent<Rigidbody>().AddRelativeForce(spawnedBullet.transform.forward * 20.0f, ForceMode.Impulse);
     }
 
     public int GetTeamID()

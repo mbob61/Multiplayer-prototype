@@ -17,12 +17,16 @@ public class PlanetTurretDetectionRadiusController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!target)
+        ShipControllerV3 ship = other.GetComponent<ShipControllerV3>();
+        if (ship)
         {
-            // -1 check here to make sure a team has been assigned before trying to set a target
-            if (other.GetComponent<ShipControllerV3>().GetTeamID() != teamToProtect && teamToProtect != -1)
+            if (!target)
             {
-                target = other.gameObject;
+                // -1 check here to make sure a team has been assigned before trying to set a target
+                if (ship.GetTeamID() != teamToProtect)
+                {
+                    target = other.gameObject;
+                }
             }
         }
     }

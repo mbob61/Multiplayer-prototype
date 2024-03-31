@@ -25,9 +25,8 @@ public class PlanetController : MonoBehaviour
 
     private bool spawnedTurrets = false;
 
-
     private OCCUPIED_STATE occupiedState = OCCUPIED_STATE.empty;
-    private CONVERSION_STATE conversionState = CONVERSION_STATE.not_converted;
+    [SerializeField] private CONVERSION_STATE conversionState = CONVERSION_STATE.not_converted;
 
     // Start is called before the first frame update
     void Start()
