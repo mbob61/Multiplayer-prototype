@@ -40,6 +40,7 @@ public class ShipControllerV3 : NetworkBehaviour
     [SerializeField] private GameObject networkedBullet;
     [SerializeField] private GameObject nonNetworkedBullet;
     [SerializeField] private GameObject bodyGraphic;
+    [SerializeField] private GameObject turret;
 
     [Header("Planet Conversion")]
     [SerializeField] private int teamID = 0;
@@ -173,16 +174,22 @@ public class ShipControllerV3 : NetworkBehaviour
     private void CreateBulletServerRpc()
     {
         Debug.Log($"ServerRPc - {OwnerClientId}");
-        GameObject spawnedBullet = Instantiate(networkedBullet, firePoint.position, Quaternion.identity);
-
+        GameObject spawnedBullet = spawnBulletAndApplyForce(networkedBullet);
         spawnedBullet.GetComponent<NetworkObject>().Spawn(true);
-        spawnedBullet.GetComponent<Rigidbody>().AddForce(spawnedBullet.transform.forward * 20.0f, ForceMode.Impulse);
     }
 
     private void CreateBullet()
     {
-        GameObject spawnedBullet = Instantiate(nonNetworkedBullet, firePoint.position, Quaternion.identity);
-        spawnedBullet.GetComponent<Rigidbody>().AddRelativeForce(spawnedBullet.transform.forward * 20.0f, ForceMode.Impulse);
+        spawnBulletAndApplyForce(nonNetworkedBullet);
+    }
+
+    private GameObject spawnBulletAndApplyForce(GameObject bullet)
+    {
+        print("Local: " + turret.transform.localRotation.eulerAngles);
+        print("Global?: " + turret.transform.rotation.eulerAngles);
+        GameObject spawnedBullet = Instantiate(bullet, firePoint.position, turret.transform.rotation);
+        spawnedBullet.GetComponent<Rigidbody>().AddForce(spawnedBullet.transform.forward * 2.0f, ForceMode.Impulse);
+        return spawnedBullet;
     }
 
     public int GetTeamID()
