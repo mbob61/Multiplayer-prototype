@@ -185,8 +185,6 @@ public class ShipControllerV3 : NetworkBehaviour
 
     private GameObject spawnBulletAndApplyForce(GameObject bullet)
     {
-        print("Local: " + turret.transform.localRotation.eulerAngles);
-        print("Global?: " + turret.transform.rotation.eulerAngles);
         GameObject spawnedBullet = Instantiate(bullet, firePoint.position, turret.transform.rotation);
         spawnedBullet.GetComponent<Rigidbody>().AddForce(spawnedBullet.transform.forward * 2.0f, ForceMode.Impulse);
         return spawnedBullet;

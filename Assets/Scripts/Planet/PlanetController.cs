@@ -61,12 +61,7 @@ public class PlanetController : MonoBehaviour
 
         OccupiedAndConversionStateMachine(occupiedState, conversionState);
 
-        if (!spawnedTurrets)
-        {
-            SpawnTurretsForConvertedPlanet();
-        }
-
-        
+        SpawnTurretsForConvertedPlanet();
     }
 
     private void OccupiedAndConversionStateMachine(OCCUPIED_STATE _occupiedState, CONVERSION_STATE _conversionState)
@@ -87,6 +82,7 @@ public class PlanetController : MonoBehaviour
                             {
                                 conversionAmount = 0;
                                 conversionState = CONVERSION_STATE.not_converted;
+                                spawnedTurrets = false;
                                 resetOwningTeam();
                                 planetBodyRenderer.materials[0].color = owningTeam.GetTeamColor();
                             }
@@ -190,18 +186,12 @@ public class PlanetController : MonoBehaviour
         {
             if (timeSinceConversion + Time.deltaTime >= timeUntilSpawnDefences)
             {
-                //List<TurretSpawnPositionData> turretData = new List<TurretSpawnPositionData>();
-                //turretData.Add(new TurretSpawnPositionData(Vector3.zero));
-                //turretData.Add(new TurretSpawnPositionData(new Vector3(90, 0, 0)));
-                //turretData.Add(new TurretSpawnPositionData(new Vector3(180, 0, 0)));
-                //turretData.Add(new TurretSpawnPositionData(new Vector3(270, 0, 0)));
-                //turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 90)));
-                //turretData.Add(new TurretSpawnPositionData(new Vector3(0, 0, 270)));
-
-                spawnedTurrets = true;
-                //turretSpawner.SpawnTurrets(turretData, owningTeam.GetTeamID());
-                turretSpawner.SpawnTurrets(owningTeam.GetTeamID());
-                timeSinceConversion = 0;
+                if (!spawnedTurrets)
+                {
+                    spawnedTurrets = true;
+                    turretSpawner.SpawnTurrets(owningTeam.GetTeamID());
+                    timeSinceConversion = 0;
+                }
             }
             else
             {
@@ -211,7 +201,6 @@ public class PlanetController : MonoBehaviour
         else
         {
             timeSinceConversion = 0;
-            spawnedTurrets = false;
             turretSpawner.DestroyTurrets();
         }
     }

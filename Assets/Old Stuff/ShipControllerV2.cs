@@ -87,7 +87,6 @@ public class ShipControllerV2 : NetworkBehaviour
         }
         else if (IsClient && IsLocalPlayer)
         {
-            print("I get in here?");
             MovementServerRpc(thrustForce, upDownForce);
             RotationServerRpc(shipRotation);
         }

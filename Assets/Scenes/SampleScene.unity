@@ -1879,7 +1879,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1787123417977606001, guid: 16450919ee9514d999e126556bd35da3, type: 3}
       propertyPath: conversionState
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3752843513514824667, guid: 16450919ee9514d999e126556bd35da3, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -2017,7 +2017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2538519744543620926, guid: 0d183d63146744aac9bc34b47be4916d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6841811445531291780, guid: 0d183d63146744aac9bc34b47be4916d, type: 3}
       propertyPath: m_LocalPosition.x

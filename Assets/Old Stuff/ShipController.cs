@@ -53,7 +53,6 @@ public class ShipController : MonoBehaviour
         {
             rb.AddRelativeForce(Vector3.forward * glide * Time.fixedDeltaTime);
             glide *= thrustGlideReduction;
-            print(glide);
         }
 
         // Up / Down

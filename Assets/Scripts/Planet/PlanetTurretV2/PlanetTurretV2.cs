@@ -11,12 +11,14 @@ public class PlanetTurretV2 : MonoBehaviour
     [SerializeField] private float turretAngle;
     [SerializeField] private GameObject turretProjectile;
 
+    [SerializeField] private int teamToProtect;
+
     private GameObject target;
     private float currentAngle, currentSpeed;
 
     private void Start()
     {
-        StartCoroutine("fireWithDelay", 2.0f);
+        //StartCoroutine("fireWithDelay", 2.0f);
     }
 
     private IEnumerator fireWithDelay(float delay)
@@ -29,6 +31,11 @@ public class PlanetTurretV2 : MonoBehaviour
                 fireShot();
             }
         }
+    }
+
+    public void SetTeamToProtect(int teamID)
+    {
+        teamToProtect = teamID;
     }
 
 
@@ -44,6 +51,7 @@ public class PlanetTurretV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        fieldOfView.setTeamToProtect(teamToProtect);
         target = fieldOfView.GetTarget();
 
         if (!target) return;
@@ -84,7 +92,7 @@ public class PlanetTurretV2 : MonoBehaviour
     }
 
     //Projects a vector onto a plane. The output is not normalized.
-    public static Vector3 ProjectVectorOnPlane(Vector3 planeNormal, Vector3 vector)
+    private static Vector3 ProjectVectorOnPlane(Vector3 planeNormal, Vector3 vector)
     {
         return vector - (Vector3.Dot(vector, planeNormal) * planeNormal);
     }
@@ -108,7 +116,7 @@ public class PlanetTurretV2 : MonoBehaviour
     /// <param name="angle0"></param>
     /// <param name="angle1"></param>
     /// <returns>False if the target is out of range</returns>
-    public static bool LaunchAngle(float speed, float distance, float yOffset, float gravity, out float angle0, out float angle1)
+    private static bool LaunchAngle(float speed, float distance, float yOffset, float gravity, out float angle0, out float angle1)
     {
         angle0 = angle1 = 0;
 
@@ -129,7 +137,7 @@ public class PlanetTurretV2 : MonoBehaviour
         return true;
     }
 
-    public static float LaunchSpeed(float distance, float yOffset, float gravity, float angle)
+    private static float LaunchSpeed(float distance, float yOffset, float gravity, float angle)
     {
         float speed = (distance * Mathf.Sqrt(gravity) * Mathf.Sqrt(1 / Mathf.Cos(angle))) / Mathf.Sqrt(2 * distance * Mathf.Sin(angle) + 2 * yOffset * Mathf.Cos(angle));
 

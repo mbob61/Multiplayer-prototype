@@ -182,9 +182,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1887867923077915320}
-  thrustModifier: 10
-  upDownModifier: 10
-  yawModifier: 30
+  thrustModifier: 8
+  upDownModifier: 8
+  yawModifier: 20
   pitchModifier: 30
   rollModifier: 30
   requireNetwork: 1
@@ -196,6 +196,7 @@ MonoBehaviour:
   networkedBullet: {fileID: 7870103199084723902, guid: e7bf61e198c3c4753a99e0c1970c303f, type: 3}
   nonNetworkedBullet: {fileID: 7870103199084723902, guid: 30527c6ec97624955a06c4d250da0649, type: 3}
   bodyGraphic: {fileID: 1948340410100885977}
+  turret: {fileID: 0}
   teamID: 1
 --- !u!54 &1887867923077915320
 Rigidbody:

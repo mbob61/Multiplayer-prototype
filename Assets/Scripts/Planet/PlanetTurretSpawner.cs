@@ -41,7 +41,7 @@ public class PlanetTurretSpawner : MonoBehaviour
             float halfTurretWidth = (turret.transform.localScale.x / 2);
 
             spawnedTurret.gameObject.transform.position = planetPosition + (spawnedTurret.transform.up * (planetEdge + halfTurretWidth));
-            spawnedTurret.GetComponent<PlanetTurretController>().SetTeamToProtect(teamID);
+            spawnedTurret.GetComponent<PlanetTurretV2>().SetTeamToProtect(teamID);
             spawnedTurrets.Add(spawnedTurret);
         }
 
@@ -57,9 +57,9 @@ public class PlanetTurretSpawner : MonoBehaviour
         {
             foreach (GameObject t in spawnedTurrets)
             {
-                spawnedTurrets.Remove(t);
                 Destroy(t);
             }
+            spawnedTurrets.Clear();
         }
     }
 }
