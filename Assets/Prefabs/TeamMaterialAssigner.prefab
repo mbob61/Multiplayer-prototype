@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1180019072136373007}
   - component: {fileID: 4704608323294328946}
+  - component: {fileID: -1169231461159914228}
   m_Layer: 0
   m_Name: TeamMaterialAssigner
   m_TagString: Untagged
@@ -47,3 +48,24 @@ MonoBehaviour:
   teamMaterials:
   - {fileID: 2100000, guid: a2a55164e6d344e21a92d5fa2451efce, type: 2}
   - {fileID: 2100000, guid: 4aa5bf77ef32042d4a7a89d07335c6ba, type: 2}
+--- !u!114 &-1169231461159914228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602653492914379672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
