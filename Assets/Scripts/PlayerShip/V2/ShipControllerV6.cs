@@ -196,37 +196,10 @@ public class ShipControllerV6 : NetworkBehaviour
         }
         else
         {
-            print("do i get in here?");
             HandleServerTickServerRpc(inputPayload);
         }
 
         handleServerReconciliation();
-
-        //if (clientAuthorititiveMovement)
-        //{
-
-        //    StatePayload clientStatePayload = clientStatePayloadBuffer.Get(bufferIndex);
-        //    StatePayload serverStatePayload = serverPairShip.GetServerStatePayloadBuffer().Get(bufferIndex);
-
-        //    float distanceBetweenClientAndServer = Vector3.Distance(clientStatePayload.position, serverStatePayload.position);
-        //    float distanceBetweenNowAndSuccessfulState = Vector3.Distance(clientStatePayload.position, lastSuccessfulState.position);
-
-        //    //if (distanceBetweenClientAndServer > reconciliationThreshold || distanceBetweenNowAndSuccessfulState > reconciliationThreshold)
-        //    if (distanceBetweenClientAndServer > reconciliationThreshold)
-        //        {
-        //        // Reconciliation needed
-        //        print("Positions are not within the accectpable threshold. We need to reconcile: " + distanceBetweenClientAndServer);
-        //        transform.position = serverStatePayload.position;
-        //        transform.rotation = serverStatePayload.rotation;
-        //        rb.velocity = serverStatePayload.velocity;
-        //        lastSuccessfulState = clientStatePayloadBuffer.Get(bufferIndex);
-        //    }
-        //    else
-        //    {
-        //        print("Positions are within threshold, no need to reconcile: " + distanceBetweenClientAndServer);
-        //        lastSuccessfulState = clientStatePayloadBuffer.Get(bufferIndex);
-        //    }
-        //}
     }
 
     private void handleServerReconciliation()
@@ -240,19 +213,21 @@ public class ShipControllerV6 : NetworkBehaviour
 
                 float positionError = Vector3.Distance(clientState.position, serverState.position);
 
-                if (positionError > reconciliationThreshold)
+                float serverPositionError = Vector3.Distance(serverState.position, lastSuccessfulState.position);
+
+                if (positionError > reconciliationThreshold || serverPositionError > reconciliationThreshold)
                 {
                     // Reconciliation needed
-                    print("Positions are not within the accectpable threshold. We need to reconcile: " + positionError);
-                    transform.position = serverState.position;
-                    transform.rotation = serverState.rotation;
-                    rb.velocity = serverState.velocity;
+                    print("A Position is not within the accectpable threshold. We need to reconcile: " + positionError + ", " + serverPositionError);
+                    transform.position = lastSuccessfulState.position;
+                    transform.rotation = lastSuccessfulState.rotation;
+                    rb.velocity = lastSuccessfulState.velocity;
                     clientStatePayloadList.Clear();
-                    lastSuccessfulState = serverState;
                 }
                 else
                 {
-                    //print("Positions are within threshold, no need to reconcile: " + positionError);
+                    print("Client Positions are within threshold, no need to reconcile: " + positionError);
+                    print("Server Positions are within threshold, no need to reconcile: " + serverPositionError);
                     lastSuccessfulState = serverState;
                 }
             }
@@ -269,13 +244,13 @@ public class ShipControllerV6 : NetworkBehaviour
     [ClientRpc]
     void SendToClientRpc(StatePayload statePayload)
     {
-        print("do i ever make it here into the client rpc??");
         addToList(serverStatePayloadList, statePayload);
     }
 
     private void addToList(List<StatePayload> list, StatePayload state)
     {
-        if (list.Count > 200)
+        // 2 in game seconds worth of positions
+        if (list.Count > 2 / (1 / Time.fixedDeltaTime))
         {
             list.Clear();
         }
