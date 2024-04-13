@@ -9,6 +9,7 @@ public class PlanetTurretV2 : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float turretForce;
     [SerializeField] private float turretAngle;
+    [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private GameObject turretProjectile;
 
     [SerializeField] private int teamToProtect;
@@ -18,7 +19,7 @@ public class PlanetTurretV2 : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine("fireWithDelay", 2.0f);
+        StartCoroutine("fireWithDelay", fireRate);
     }
 
     private IEnumerator fireWithDelay(float delay)
@@ -42,8 +43,8 @@ public class PlanetTurretV2 : MonoBehaviour
     private void fireShot()
     {
 
-        //GameObject p = Instantiate(turretProjectile, firePoint.position, Quaternion.identity);
-        //p.GetComponent<Rigidbody>().velocity = turretCannon.transform.up * currentSpeed;
+        GameObject p = Instantiate(turretProjectile, firePoint.position, Quaternion.identity);
+        p.GetComponent<Rigidbody>().velocity = turretCannon.transform.up * currentSpeed;
 
     }
 
@@ -97,10 +98,10 @@ public class PlanetTurretV2 : MonoBehaviour
         return vector - (Vector3.Dot(vector, planeNormal) * planeNormal);
     }
 
-    private void SetTurret(Vector3 planarDirection, float turretAngle)
+    private void SetTurret(Vector3 planarDirection, float angle)
     {
         turretBase.transform.rotation = Quaternion.LookRotation(planarDirection) * Quaternion.Euler(-90, -90, 0);
-        turretCannon.transform.localRotation = Quaternion.Euler(90, 90, 0) * Quaternion.AngleAxis(turretAngle, Vector3.forward);
+        turretCannon.transform.localRotation = Quaternion.Euler(90, 90, 0) * Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
 

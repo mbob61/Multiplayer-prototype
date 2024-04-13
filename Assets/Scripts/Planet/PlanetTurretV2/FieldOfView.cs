@@ -43,7 +43,7 @@ public class FieldOfView : MonoBehaviour
 
         foreach (Collider c in targetsInViewRadius)
         {
-            ShipControllerV3 ship = c.GetComponent<ShipControllerV3>();
+            ShipControllerV6 ship = c.GetComponent<ShipControllerV6>();
             if (ship && ship.GetTeamID() != teamIDToProtect)
             {
                 Transform viewTarget = c.transform;

@@ -4,59 +4,49 @@ using UnityEngine;
 
 public class ShipHelpers
 {
-    public float calculatefloatValue(float input, float returned)
+    public float calculatefloatValue(float input, float returned, float accelerationRate, float decelerationRate)
     {
-        return calculatefloatValue(input, returned, true);
+        return calculatefloatValue(input, returned, true, accelerationRate, decelerationRate);
     }
 
-    public float calculatefloatValue(float input, float returned, bool resetBackToZero)
+    public float calculatefloatValue(float input, float value, bool resetBackToZero, float accelerationRate, float decelerationRate)
     {
-        float v = returned;
+        float currentValue = value;
         if (input > 0)
         {
-            if (returned < 0)
-            {
-                v = incrementFloat(returned, 1, 3.0f);
-            } else {
-                v = incrementFloat(returned, 1);
-            }
+            //if (currentValue < 0)
+            //{
+                currentValue = incrementFloat(currentValue, 1, accelerationRate);
+            //} else {
+            //    currentValue = incrementFloat(currentValue, 1);
+            //}
         }
         else if (input < 0)
         {
-            if (returned > 0)
-            {
-                v = decrementFloat(returned, -1, 3.0f);
-            } else
-            {
-                v = decrementFloat(returned, -1);
-            }
+            //if (currentValue > 0)
+            //{
+                currentValue = decrementFloat(currentValue, -1, accelerationRate);
+            //} else
+            //{
+            //    currentValue = decrementFloat(currentValue, -1);
+            //}
         }
         else
         {
             if (resetBackToZero)
             {
-                if (returned > 0)
+                if (currentValue > 0)
                 {
-                    v = decrementFloat(returned, 0);
+                    currentValue = decrementFloat(currentValue, 0, decelerationRate);
                 }
-                else if (returned < 0)
+                else if (currentValue < 0)
                 {
-                    v = incrementFloat(returned, 0);
+                    currentValue = incrementFloat(currentValue, 0, decelerationRate);
 
                 }
             }
         }
-        return v;
-    }
-
-    private float incrementFloat(float v, float target)
-    {
-        return incrementFloat(v, target, 1.0f);
-    }
-
-    private float decrementFloat(float v, float target)
-    {
-        return decrementFloat(v, target, 1.0f);
+        return currentValue;
     }
 
     private float incrementFloat(float v, float target, float incrementModifier)

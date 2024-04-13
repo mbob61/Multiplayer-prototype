@@ -43,12 +43,10 @@ public class ShipMovementComponent : NetworkBehaviour
     }
 
     [Header("Server reconciliation")]
-    // Netcode general
     NetworkTimer networkTimer;
     const float k_serverTickRate = 60f; // 60 FPS
     const int k_bufferSize = 1024;
 
-    // Netcode client specific
     CircularBuffer<StatePayload> clientStatePayloadBuffer;
 
     List<StatePayload> clientStatePayloadList;
@@ -58,12 +56,24 @@ public class ShipMovementComponent : NetworkBehaviour
     StatePayload lastSuccessfulState;
     [SerializeField] private float reconciliationThreshold = 1.0f;
 
-    [Header("Movement Modifiers")]
-    [SerializeField] private float thrustModifier = 1;
-    [SerializeField] private float upDownModifier = 1;
-    [SerializeField] private float yawModifier = 1;
-    [SerializeField] private float pitchModifier = 1;
-    [SerializeField] private float rollModifier = 1;
+    [Header("Thrust Modifiers")]
+    [SerializeField] private float thrustModifier = 10;
+    [SerializeField] private float thrustAccelerationRate = 3.0f;
+    [SerializeField] private float thrustDecelerationRate = 3.0f;
+
+    [Header("Up Down Modifiers")]
+    [SerializeField] private float upDownModifier = 10;
+    [SerializeField] private float upDownAccelerationRate = 1.0f;
+    [SerializeField] private float upDownDecelerationRate = 1.0f;
+
+    [Header("Yaw Modifiers")]
+    [SerializeField] private float yawModifier = 20;
+    [SerializeField] private float yawAccelerationRate = 1.0f;
+    [SerializeField] private float yawDecelerationRate = 1.0f;
+
+    [Header("Other Modifiers")]
+    [SerializeField] private float pitchModifier = 20;
+    [SerializeField] private float rollModifier = 20;
 
     [Header("Movement Types")]
     [SerializeField] private bool clientAuthorititiveMovement = false;
@@ -163,7 +173,7 @@ public class ShipMovementComponent : NetworkBehaviour
         {
             tick = currentTick,
             networkObjectId = NetworkObjectId,
-            inputVector = new Vector3(thrustInput, upDownInput, yawInput),
+            inputVector = new Vector3(thrust, upDown, yaw),
             position = transform.position
         };
 
@@ -279,10 +289,10 @@ public class ShipMovementComponent : NetworkBehaviour
 
     private void ConvertToDecimalValues()
     {
-        thrust = shipHelpers.calculatefloatValue(thrustInput, thrust, holdToThrust);
-        upDown = shipHelpers.calculatefloatValue(upDownInput, upDown);
-        yaw = shipHelpers.calculatefloatValue(yawInput, yaw);
-        pitch = shipHelpers.calculatefloatValue(pitchInput, pitch);
-        roll = shipHelpers.calculatefloatValue(rollInput, roll);
+        thrust = shipHelpers.calculatefloatValue(thrustInput, thrust, holdToThrust, thrustAccelerationRate, thrustDecelerationRate);
+        upDown = shipHelpers.calculatefloatValue(upDownInput, upDown, upDownAccelerationRate, upDownDecelerationRate);
+        yaw = shipHelpers.calculatefloatValue(yawInput, yaw, yawAccelerationRate, yawDecelerationRate);
+        //pitch = shipHelpers.calculatefloatValue(pitchInput, pitch, accelerationRate, decelerationRate);
+        //roll = shipHelpers.calculatefloatValue(rollInput, roll, accelerationRate, decelerationRate);
     }
 }

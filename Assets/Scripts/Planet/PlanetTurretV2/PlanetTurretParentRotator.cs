@@ -13,7 +13,7 @@ public class PlanetTurretParentRotator : MonoBehaviour
     {
         if (canRotate)
         {
-            //transform.Rotate(rotationAxis * speed);
+            transform.Rotate(rotationAxis * speed);
         }
     }
 

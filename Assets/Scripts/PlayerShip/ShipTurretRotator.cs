@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 
 public class ShipTurretRotator : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float accelerationRate = 1.0f;
+    [SerializeField] private float decelerationRate = 1.0f;
     private float rotation, rotationInput;
     private ShipHelpers shipHelpers;
 
@@ -23,11 +25,11 @@ public class ShipTurretRotator : MonoBehaviour
     {
         ConvertToDecimalValues();
 
-        transform.Rotate(Vector3.up * rotation * speed * Time.deltaTime);
+        transform.Rotate(Vector3.up * rotation * rotationSpeed * Time.deltaTime);
     }
 
     private void ConvertToDecimalValues()
     {
-        rotation = shipHelpers.calculatefloatValue(rotationInput, rotation);
+        rotation = shipHelpers.calculatefloatValue(rotationInput, rotation, accelerationRate, decelerationRate);
     }
 }
