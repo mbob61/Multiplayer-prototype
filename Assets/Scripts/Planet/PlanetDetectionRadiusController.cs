@@ -37,9 +37,10 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ShipControllerV3 ship = other.GetComponent<ShipControllerV3>();
+        ShipControllerV6 ship = other.GetComponent<ShipControllerV6>();
         if (ship)
         {
+            print("ship entered");
             if (!teamsMap.ContainsKey(ship.GetTeamID()))
             {
                 teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, teamMaterialAssigner.GetMaterialForTeamWithID(ship.GetTeamID()).color));
@@ -53,7 +54,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        ShipControllerV3 ship = other.GetComponent<ShipControllerV3>();
+        ShipControllerV6 ship = other.GetComponent<ShipControllerV6>();
         if (ship)
         {            
             if (teamsMap[ship.GetTeamID()].GetCount() == 1)
