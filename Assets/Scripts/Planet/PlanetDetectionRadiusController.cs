@@ -37,7 +37,6 @@ public class PlanetDetectionRadiusController : MonoBehaviour
             SetColor(GetDefaultMaterial().color);
         }
 
-
         for(int i = 0; i < addedShips.Count; i++)
         {
             ShipControllerV6 ship = addedShips[i];
@@ -61,15 +60,11 @@ public class PlanetDetectionRadiusController : MonoBehaviour
 
             if (!teamsMap.ContainsKey(ship.GetTeamID()))
             {
-                addedShips = new List<ShipControllerV6>();
-                addedShips.Add(ship);
-                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, teamMaterialAssigner.GetMaterialForTeamWithID(ship.GetTeamID()).color, addedShips));
+                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, teamMaterialAssigner.GetMaterialForTeamWithID(ship.GetTeamID()).color));
             }
             else
             {
-                //teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() + 1);
                 teamsMap[ship.GetTeamID()].IncrementCount();
-                teamsMap[ship.GetTeamID()].AddShip(ship);
             }
         }
     }
@@ -91,9 +86,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         }
         else
         {
-            //teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() - 1);
             teamsMap[ship.GetTeamID()].DecrementCount();
-            teamsMap[ship.GetTeamID()].RemoveShip(ship);
         }
     }
 

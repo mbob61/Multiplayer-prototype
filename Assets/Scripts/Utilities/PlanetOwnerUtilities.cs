@@ -33,14 +33,12 @@ public class CapturingTeam
     private int teamID;
     private int count;
     private Color teamColor;
-    private List<ShipControllerV6> ships;
 
-    public CapturingTeam(int _teamID, int _count, Color _color, List<ShipControllerV6> _ships)
+    public CapturingTeam(int _teamID, int _count, Color _color)
     {
         teamID = _teamID;
         count = _count;
         teamColor = _color;
-        ships = _ships;
     }
 
     public int GetTeamID()
@@ -58,11 +56,6 @@ public class CapturingTeam
         return teamColor;
     }
 
-    public List<ShipControllerV6> getShips()
-    {
-        return ships;
-    }
-
     public void SetCount(int _count)
     {
         count = _count;
@@ -78,13 +71,4 @@ public class CapturingTeam
         count--;
     }
 
-    public void AddShip(ShipControllerV6 shipToAdd)
-    {
-        ships.Add(shipToAdd);
-    }
-
-    public void RemoveShip(ShipControllerV6 shipToRemove)
-    {
-        ships.Remove(shipToRemove);
-    }
 }
