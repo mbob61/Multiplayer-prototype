@@ -10,6 +10,7 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     private Dictionary<int, CapturingTeam> teamsMap;
     private Renderer detectionRenderer;
     private TeamMaterialAssigner teamMaterialAssigner;
+    private List<ShipControllerV6> addedShips;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,8 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         detectionRenderer = GetComponent<Renderer>();
         teamsMap = new Dictionary<int, CapturingTeam>();
         teamMaterialAssigner = FindFirstObjectByType<TeamMaterialAssigner>();
+
+        addedShips = new List<ShipControllerV6>();
     }
 
     private void Update()
@@ -33,6 +36,20 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         {
             SetColor(GetDefaultMaterial().color);
         }
+
+
+        for(int i = 0; i < addedShips.Count; i++)
+        {
+            ShipControllerV6 ship = addedShips[i];
+            if (!ship || !ship.isActiveAndEnabled)
+            {
+                RemoveShip(ship);
+                addedShips.Remove(ship);
+                i--;
+            }
+        }
+        
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,14 +57,19 @@ public class PlanetDetectionRadiusController : MonoBehaviour
         ShipControllerV6 ship = other.GetComponent<ShipControllerV6>();
         if (ship)
         {
-            print("ship entered");
+            addedShips.Add(ship);
+
             if (!teamsMap.ContainsKey(ship.GetTeamID()))
             {
-                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, teamMaterialAssigner.GetMaterialForTeamWithID(ship.GetTeamID()).color));
+                addedShips = new List<ShipControllerV6>();
+                addedShips.Add(ship);
+                teamsMap.Add(ship.GetTeamID(), new CapturingTeam(ship.GetTeamID(), 1, teamMaterialAssigner.GetMaterialForTeamWithID(ship.GetTeamID()).color, addedShips));
             }
             else
             {
-                teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() + 1);
+                //teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() + 1);
+                teamsMap[ship.GetTeamID()].IncrementCount();
+                teamsMap[ship.GetTeamID()].AddShip(ship);
             }
         }
     }
@@ -56,15 +78,22 @@ public class PlanetDetectionRadiusController : MonoBehaviour
     {
         ShipControllerV6 ship = other.GetComponent<ShipControllerV6>();
         if (ship)
-        {            
-            if (teamsMap[ship.GetTeamID()].GetCount() == 1)
-            {
-                teamsMap.Remove(ship.GetTeamID());
-            }
-            else
-            {
-                teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() - 1);
-            }
+        {
+            RemoveShip(ship);
+        }
+    }
+
+    private void RemoveShip(ShipControllerV6 ship)
+    {
+        if (teamsMap[ship.GetTeamID()].GetCount() == 1)
+        {
+            teamsMap.Remove(ship.GetTeamID());
+        }
+        else
+        {
+            //teamsMap[ship.GetTeamID()].SetCount(teamsMap[ship.GetTeamID()].GetCount() - 1);
+            teamsMap[ship.GetTeamID()].DecrementCount();
+            teamsMap[ship.GetTeamID()].RemoveShip(ship);
         }
     }
 
